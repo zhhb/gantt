@@ -134,41 +134,6 @@
           }
         }
       }
-    },
-    "@wm/gantt": {
-      "root": "projects/wm/gantt",
-      "sourceRoot": "projects/wm/gantt/src",
-      "projectType": "library",
-      "prefix": "gantt",
-      "architect": {
-        "build": {
-          "builder": "@angular-devkit/build-ng-packagr:build",
-          "options": {
-            "tsConfig": "projects/wm/gantt/tsconfig.lib.json",
-            "project": "projects/wm/gantt/ng-package.json"
-          }
-        },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "main": "projects/wm/gantt/src/test.ts",
-            "tsConfig": "projects/wm/gantt/tsconfig.spec.json",
-            "karmaConfig": "projects/wm/gantt/karma.conf.js"
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "projects/wm/gantt/tsconfig.lib.json",
-              "projects/wm/gantt/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
-          }
-        }
-      }
     }
   },
   "defaultProject": "gantt"
