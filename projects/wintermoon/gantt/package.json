@@ -1,0 +1,10 @@
+{
+  "name": "@wintermoon/gantt",
+  "version": "0.0.1",
+  "peerDependencies": {
+    "@angular/common": "^7.2.0",
+    "@angular/core": "^7.2.0",
+    "lodash": "^4.17.11",
+    "date-fns": "^1.30.1"
+  }
+}

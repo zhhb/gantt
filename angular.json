@@ -134,6 +134,41 @@
           }
         }
       }
+    },
+    "@wintermoon/gantt": {
+      "root": "projects/wintermoon/gantt",
+      "sourceRoot": "projects/wintermoon/gantt/src",
+      "projectType": "library",
+      "prefix": "gantt",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/wintermoon/gantt/tsconfig.lib.json",
+            "project": "projects/wintermoon/gantt/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/wintermoon/gantt/src/test.ts",
+            "tsConfig": "projects/wintermoon/gantt/tsconfig.spec.json",
+            "karmaConfig": "projects/wintermoon/gantt/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/wintermoon/gantt/tsconfig.lib.json",
+              "projects/wintermoon/gantt/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
     }
   },
   "defaultProject": "gantt"

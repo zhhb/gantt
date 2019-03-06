@@ -17,6 +17,19 @@
     "lib": [
       "es2018",
       "dom"
-    ]
+    ],
+    "plugins": [
+      {
+        "name": "@angular/language-service"
+      }
+    ],
+    "paths": {
+      "@wintermoon/gantt": [
+        "dist/wintermoon/gantt"
+      ],
+      "@wintermoon/gantt/*": [
+        "dist/wintermoon/gantt/*"
+      ]
+    }
   }
 }
