@@ -1,15 +1,14 @@
 import { merge as mergeDeep } from 'lodash';
-import * as dateFormat from 'date-fns/format';
+import * as dateFormat_ from 'date-fns/format';
 import * as en from 'date-fns/locale/en';
+import { GanttOptions } from '../interface/gantt-options';
+
+const dateFormat = dateFormat_;
 
 /**
  *
  * @param document
- *
- * @returns {number}
  */
-import { GanttOptions } from '../interface/gantt-options';
-
 export function calcScrollBarHeight(document: Document): number {
   const outer                 = document.createElement('div');
   outer.style.visibility      = 'hidden';
@@ -28,7 +27,7 @@ export function calcScrollBarHeight(document: Document): number {
 
 /**
  *
- * @returns {GanttOptions}
+ * @returns a default GanttOptions
  */
 export function fetchDefaultGanttOptions(): GanttOptions {
   return {
@@ -228,9 +227,9 @@ export function fetchDefaultGanttOptions(): GanttOptions {
 
 /**
  *
- * @param {GanttOptions} userOptions
+ * @param userOptions
  *
- * @returns {GanttOptions}
+ * @returns a deep merged GanttOptions
  */
 export function mergeGanttOptions(userOptions: GanttOptions): GanttOptions {
   return mergeDeep(fetchDefaultGanttOptions(), userOptions);

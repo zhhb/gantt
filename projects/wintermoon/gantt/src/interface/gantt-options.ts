@@ -1,5 +1,3 @@
-import { resolveSrv } from 'dns';
-
 export interface GanttOptionsHeader {
   label: string;
   html: boolean;
