@@ -1,13 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+
+export type ExpanderType = 'task' | 'chart';
 
 @Component({
-  selector: 'gantt-expander',
+  selector   : 'gantt-expander',
   templateUrl: './expander.component.html',
-  styles: []
+  styles     : []
 })
 export class ExpanderComponent implements OnInit {
 
-  constructor() { }
+  @Input() type: ExpanderType = 'task';
+
+  constructor() {
+  }
 
   ngOnInit() {
   }

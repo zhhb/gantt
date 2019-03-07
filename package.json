@@ -26,6 +26,7 @@
     "lodash": "^4.17.11",
     "rxjs": "~6.3.3",
     "tslib": "^1.9.0",
+    "uuid": "^3.3.2",
     "zone.js": "~0.8.26"
   },
   "devDependencies": {
@@ -39,6 +40,7 @@
     "@types/jasminewd2": "~2.0.3",
     "@types/lodash": "^4.14.122",
     "@types/node": "~8.9.4",
+    "@types/uuid": "^3.4.4",
     "codelyzer": "~4.5.0",
     "conventional-changelog-cli": "^2.0.12",
     "jasmine-core": "~2.99.1",
