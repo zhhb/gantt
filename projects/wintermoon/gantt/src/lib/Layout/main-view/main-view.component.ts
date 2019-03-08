@@ -1,34 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { GanttChildrenBase } from '../../gantt.component';
 
 @Component({
   selector   : 'gantt-main-view',
   templateUrl: './main-view.component.html',
-  styles     : [ `
-    .gantt-main-view {
-      position: relative;
-      display: flex;
-      flex-direction: row;
-      max-width: 100%;
-      height: 100%;
-      overflow: hidden;
-      box-sizing: border-box;
-    }
-
-    .gantt-task-list-wrapper {
-      box-sizing: border-box;
-    }
-
-    .gantt-chart-wrapper {
-      box-sizing: border-box;
-      flex: auto;
-      overflow: hidden;
-      max-width: 100%;
-    }
-  ` ]
+  styles     : []
 })
-export class MainViewComponent implements OnInit {
+export class MainViewComponent extends GanttChildrenBase implements OnInit {
 
   constructor() {
+    super();
   }
 
   ngOnInit() {

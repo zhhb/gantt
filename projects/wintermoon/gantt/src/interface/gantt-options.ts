@@ -96,22 +96,22 @@ export interface GanttOptionsChart {
 }
 
 export interface GanttOptionsTaskList {
-  display: boolean;
-  resizeAfterThreshold: boolean;
-  widthThreshold: number;
-  columns: {
+  display?: boolean;
+  resizeAfterThreshold?: boolean;
+  widthThreshold?: number;
+  columns?: {
     id: number | string;
     label: string;
     value: string;
     width: number;
   }[];
-  resizerWidth: number;
-  percent: number;
-  width: number;
-  finalWidth: number;
-  widthFromPercentage: number;
-  minWidth: number;
-  expander: {
+  resizerWidth?: number;
+  percent?: number;
+  width?: number;
+  finalWidth?: number;
+  widthFromPercentage?: number;
+  minWidth?: number;
+  expander?: {
     type: string; // task-list
     size: number;
     columnWidth: number;

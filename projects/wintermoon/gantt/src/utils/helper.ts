@@ -231,6 +231,6 @@ export function fetchDefaultGanttOptions(): GanttOptions {
  *
  * @returns a deep merged GanttOptions
  */
-export function mergeGanttOptions(userOptions: GanttOptions): GanttOptions {
-  return mergeDeep(fetchDefaultGanttOptions(), userOptions);
+export function mergeGanttOptions(userOptions: GanttOptions, ...otherOptions: GanttOptions[]): GanttOptions {
+  return mergeDeep(fetchDefaultGanttOptions(), userOptions, ...otherOptions);
 }

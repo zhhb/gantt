@@ -1,15 +1,17 @@
 .gantt-task-list-header {
   display: flex;
-  background: rgb(243, 245, 247);
+  border: 1px solid rgb(167, 169, 171);
+  background: transparent;
 
   &-column {
     display: flex;
-    background: transparent;
+    background: #fff;
     box-sizing: border-box;
     position: relative;
     flex-grow: 1;
-    height: 40px;
+    height: 32px;
     width: 100px;
+    align-items: center;
 
     &-label {
       box-sizing: border-box;
@@ -18,21 +20,28 @@
       font-size: 12px;
       flex-grow: 1;
       vertical-align: middle;
+      padding-left: 8px;
+      padding-right: 8px;
+      word-break: keep-all;
     }
 
     &-resizer {
-      padding: 5px 0;
+      //padding: 5px 0;
       width: 1px;
-      box-sizing: content-box;
-      background: #3c3c3c;
+      min-width: 1px;
+      max-width: 1px;
+      height: 100%;
+      padding-left: 2px;
+      background: rgb(167, 169, 171);
       background-clip: content-box;
       cursor: col-resize;
-      position: relative;
-      transform: translateX(50%);
+      position: absolute;
+      top: 0;
+      right: 0;
     }
 
     &:nth-last-child(1) &-resizer {
-      display: none;
+      opacity: 0;
     }
   }
 }

@@ -18,6 +18,7 @@ import { TaskListItemColumnComponent } from './Task/task-list-item-column/task-l
 import { MainViewComponent } from './Layout/main-view/main-view.component';
 import { HeaderComponent } from './Layout/header/header.component';
 import { ExpanderComponent } from './Tools/expander/expander.component';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,9 @@ import { ExpanderComponent } from './Tools/expander/expander.component';
     HeaderComponent,
     ExpanderComponent
   ],
-  imports     : [],
+  imports     : [
+    CommonModule,
+  ],
   exports     : [ GanttComponent ]
 })
 export class GanttModule {
