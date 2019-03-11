@@ -1,8 +1,6 @@
-import { ChangeDetectionStrategy, Component, HostBinding, HostListener, Input, OnInit } from '@angular/core';
-import { GanttService } from '../../gantt.service';
+import { ChangeDetectionStrategy, Component, HostListener, OnInit } from '@angular/core';
 import { GanttCompBase } from '../../gantt.component';
 import { debug } from 'debug';
-import { GanttTask, GanttTaskType } from '../../../interface/gantt-task';
 
 const logger = debug('Gantt:TaskListHeaderComponent');
 
@@ -32,16 +30,15 @@ export class TaskListHeaderComponent extends GanttCompBase implements OnInit {
   private resizerColumn;
 
 
-  private get columns(): any[] {
+  get columns(): any[] {
     return this.ganttOptions && this.ganttOptions.taskList && this.ganttOptions.taskList.columns;
   }
 
-  constructor(private ganttService: GanttService) {
+  constructor() {
     super();
   }
 
   ngOnInit() {
-    // this.columns = this.ganttService.getTaskListColumns(this.ganttId);
   }
 
   resizerStart(evt: MouseEvent, column) {
@@ -49,7 +46,7 @@ export class TaskListHeaderComponent extends GanttCompBase implements OnInit {
       this.resizerMoving     = true;
       this.resizerColumn     = column;
       this.resizerPreClientX = evt.clientX;
-      logger('resizer start, gantt id=%s, event is %O, column is %O', this.ganttId, evt, this.resizerColumn);
+      logger('resizer start, event is %O, column is %O', evt, this.resizerColumn);
     }
   }
 
@@ -61,7 +58,7 @@ export class TaskListHeaderComponent extends GanttCompBase implements OnInit {
       const currentClientX   = evt.clientX;
       this.resizerColumn.width += currentClientX - this.resizerPreClientX;
       this.resizerPreClientX = evt.clientX;
-      logger('resizer moving, gantt id=%s, event is %O, column is %O', this.ganttId, evt, this.resizerColumn);
+      logger('resizer moving, event is %O, column is %O', evt, this.resizerColumn);
     }
   }
 
@@ -71,7 +68,7 @@ export class TaskListHeaderComponent extends GanttCompBase implements OnInit {
       this.resizerMoving     = false;
       this.resizerColumn     = null;
       this.resizerPreClientX = null;
-      logger('resizer ending, gantt id=%s, event is %O, column is %O', this.ganttId, evt, this.resizerColumn);
+      logger('resizer ending, event is %O, column is %O', evt, this.resizerColumn);
     }
   }
 

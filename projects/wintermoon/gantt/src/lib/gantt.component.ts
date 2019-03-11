@@ -1,6 +1,5 @@
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   EventEmitter,
   Input,
@@ -11,10 +10,9 @@ import {
 } from '@angular/core';
 import { v1 as uuid } from 'uuid';
 import { debug } from 'debug';
-import { GanttService } from './gantt.service';
 import { GanttOptions } from '../interface/gantt-options';
-import { fetchDefaultGanttOptions, mergeGanttOptions } from '../utils/helper';
 import { GanttTask } from '../interface/gantt-task';
+import { fetchDefaultGanttOptions, mergeGanttOptions } from '../utils/helper';
 
 const logger = debug('Gantt:GanttComponent');
 
@@ -22,7 +20,7 @@ const logger = debug('Gantt:GanttComponent');
   // tslint:disable-next-line:component-selector
   selector       : 'gantt',
   template       : `
-    <gantt-main-view [ganttId]="id" [ganttOptions]="ganttOptions" [ganttTasks]="tasks"></gantt-main-view>
+    <gantt-main-view [ganttOptions]="ganttOptions" [ganttTasks]="tasks"></gantt-main-view>
   `,
   styles         : [],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -33,14 +31,13 @@ export class GanttComponent implements OnInit, OnChanges {
   private readonly id                = uuid();
   private ganttOptions: GanttOptions = fetchDefaultGanttOptions();
 
+  @Input() count: number;
   @Input() options: GanttOptions;
   @Input() tasks: GanttTask[];
 
   @Output() ready: EventEmitter<string> = new EventEmitter();
 
-  constructor(
-    private cdr: ChangeDetectorRef,
-    private ganttService: GanttService) {
+  constructor() {
   }
 
   ngOnInit() {
@@ -58,7 +55,6 @@ export class GanttComponent implements OnInit, OnChanges {
 
 
 export class GanttCompBase {
-  @Input() ganttId: string;
   @Input() ganttOptions: GanttOptions;
   @Input() ganttTasks: GanttTask[];
 }

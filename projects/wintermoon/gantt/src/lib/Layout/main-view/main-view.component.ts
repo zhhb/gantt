@@ -6,7 +6,7 @@ import { GanttCompBase } from '../../gantt.component';
   template: `
     <div class="gantt-main-view">
       <section class="gantt-task-list-wrapper">
-        <gantt-task-list [ganttId]="ganttId" [ganttOptions]="ganttOptions" [ganttTasks]="ganttTasks"></gantt-task-list>
+        <gantt-task-list [ganttOptions]="ganttOptions" [ganttTasks]="ganttTasks"></gantt-task-list>
       </section>
       <section class="gantt-chart-wrapper">
         <gantt-chart></gantt-chart>
