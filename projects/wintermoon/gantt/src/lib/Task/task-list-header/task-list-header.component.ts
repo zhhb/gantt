@@ -1,13 +1,14 @@
-import { Component, HostBinding, HostListener, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostBinding, HostListener, Input, OnInit } from '@angular/core';
 import { GanttService } from '../../gantt.service';
-import { GanttChildrenBase } from '../../gantt.component';
+import { GanttCompBase } from '../../gantt.component';
 import { debug } from 'debug';
+import { GanttTask, GanttTaskType } from '../../../interface/gantt-task';
 
 const logger = debug('Gantt:TaskListHeaderComponent');
 
 @Component({
-  selector: 'gantt-task-list-header',
-  template: `
+  selector       : 'gantt-task-list-header',
+  template       : `
     <div class="gantt-task-list-header">
       <ng-container *ngFor="let column of columns">
         <div class="gantt-task-list-header-column"
@@ -20,22 +21,27 @@ const logger = debug('Gantt:TaskListHeaderComponent');
       </ng-container>
     </div>
   `,
-  styles  : []
+  styles         : [],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TaskListHeaderComponent extends GanttChildrenBase implements OnInit {
+export class TaskListHeaderComponent extends GanttCompBase implements OnInit {
 
   private readonly columnMinWidth   = 32;
   private resizerMoving             = false;
   private resizerPreClientX: number = null;
   private resizerColumn;
-  private columns: any[]            = [];
+
+
+  private get columns(): any[] {
+    return this.ganttOptions && this.ganttOptions.taskList && this.ganttOptions.taskList.columns;
+  }
 
   constructor(private ganttService: GanttService) {
     super();
   }
 
   ngOnInit() {
-    this.columns = this.ganttService.getTaskListColumns(this.ganttId);
+    // this.columns = this.ganttService.getTaskListColumns(this.ganttId);
   }
 
   resizerStart(evt: MouseEvent, column) {

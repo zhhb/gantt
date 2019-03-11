@@ -1,19 +1,20 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
+import { Map } from 'immutable';
 import { GanttOptions } from '../../projects/wintermoon/gantt/src/interface/gantt-options';
 import { GanttService } from '../../projects/wintermoon/gantt/src/lib/gantt.service';
 
 @Component({
   selector : 'app-root',
   template : `
-    <button (click)="test()">Test</button>
-    <gantt-container [options]="options" (ready)="onReady($event)"></gantt-container>
+    <button (click)="test()">Test {{data.count}}</button>
+    <gantt [options]="options" (ready)="onReady($event)"></gantt>
   `,
-  styleUrls: [ './app.component.less' ]
+  styleUrls: [ './app.component.less' ],
 })
 export class AppComponent {
   title = 'gantt';
   ganttId: string;
-  count = 0;
+  data  = { count: 1 };
 
   options: GanttOptions = {
     taskList: {
@@ -40,7 +41,9 @@ export class AppComponent {
     }
   };
 
-  constructor(private ganttService: GanttService) {
+  constructor(
+    private cdr: ChangeDetectorRef,
+    private ganttService: GanttService) {
   }
 
   onReady(id: string) {
@@ -48,9 +51,11 @@ export class AppComponent {
   }
 
   test() {
-    this.options.taskList.columns[ 0 ].label = `ID${++this.count}`;
-    this.options.taskList.columns[ 2 ].label = `${this.count}%`;
-    this.ganttService.registerOrUpdate(this.ganttId, this.options);
+    this.data.count++;
+    this.options.taskList.columns[ 0 ].label = `ID${this.data.count}`;
+    this.options.taskList.columns[ 2 ].label = `${this.data.count}%`;
+    this.options                             = Map(this.options).toObject();
+    // this.ganttService.registerOrUpdate(this.ganttId, this.options);
     console.log('change');
   }
 }
