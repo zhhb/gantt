@@ -6,9 +6,21 @@ import { debug } from 'debug';
 const logger = debug('Gantt:TaskListHeaderComponent');
 
 @Component({
-  selector   : 'gantt-task-list-header',
-  templateUrl: './task-list-header.component.html',
-  styles     : []
+  selector: 'gantt-task-list-header',
+  template: `
+    <div class="gantt-task-list-header">
+      <ng-container *ngFor="let column of columns">
+        <div class="gantt-task-list-header-column"
+             [ngStyle]="getHeaderColumnStyle(column)">
+          <!--<gantt-expander type="task"></gantt-expander>-->
+          <div class="gantt-task-list-header-column-label">{{column.label}}</div>
+          <div class="gantt-task-list-header-column-resizer"
+               (mousedown)="resizerStart($event,column)"></div>
+        </div>
+      </ng-container>
+    </div>
+  `,
+  styles  : []
 })
 export class TaskListHeaderComponent extends GanttChildrenBase implements OnInit {
 
