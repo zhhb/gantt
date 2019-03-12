@@ -4,17 +4,21 @@ import { GanttTask } from '../../../interface/gantt-task';
 
 @Component({
   selector       : 'gantt-task-list-item',
-  template       : ``,
+  template       : `
+    <div class="gantt-task-list-item">
+      <gantt-item-column *ngFor="let column of columns"
+                         [column]="column"
+                         [task]="task"
+                         [ganttOptions]="ganttOptions"
+                         [ngStyle]="getColumnStyle(column)"></gantt-item-column>
+    </div>
+  `,
   styles         : [],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TaskListItemComponent extends GanttCompBase implements OnInit {
 
   @Input() task: GanttTask;
-
-  get columns(): any[] {
-    return this.ganttOptions && this.ganttOptions.taskList && this.ganttOptions.taskList.columns;
-  }
 
   constructor() {
     super();
@@ -23,4 +27,10 @@ export class TaskListItemComponent extends GanttCompBase implements OnInit {
   ngOnInit() {
   }
 
+  private getColumnStyle(column) {
+    return {
+      'width.px'    : column.width,
+      'min-width.px': column.width,
+    };
+  }
 }

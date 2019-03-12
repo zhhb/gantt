@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, HostListener, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, HostListener, Input, OnInit } from '@angular/core';
 import { GanttCompBase } from '../../gantt.component';
 import { debug } from 'debug';
 
@@ -8,15 +8,14 @@ const logger = debug('Gantt:TaskListHeaderComponent');
   selector       : 'gantt-task-list-header',
   template       : `
     <div class="gantt-task-list-header">
-      <ng-container *ngFor="let column of columns">
-        <div class="gantt-task-list-header-column"
-             [ngStyle]="getHeaderColumnStyle(column)">
-          <!--<gantt-expander type="task"></gantt-expander>-->
-          <div class="gantt-task-list-header-column-label">{{column.label}}</div>
-          <div class="gantt-task-list-header-column-resizer"
-               (mousedown)="resizerStart($event,column)"></div>
-        </div>
-      </ng-container>
+      <div class="gantt-task-list-header-column"
+           *ngFor="let column of columns"
+           [ngStyle]="getHeaderColumnStyle(column)">
+        <!--<gantt-expander type="task"></gantt-expander>-->
+        <div class="gantt-task-list-header-column-label">{{column.label}}</div>
+        <div class="gantt-task-list-header-column-resizer"
+             (mousedown)="resizerStart($event,column)"></div>
+      </div>
     </div>
   `,
   styles         : [],
@@ -29,12 +28,7 @@ export class TaskListHeaderComponent extends GanttCompBase implements OnInit {
   private resizerPreClientX: number = null;
   private resizerColumn;
 
-
-  get columns(): any[] {
-    return this.ganttOptions && this.ganttOptions.taskList && this.ganttOptions.taskList.columns;
-  }
-
-  constructor() {
+  constructor(private cdr: ChangeDetectorRef) {
     super();
   }
 
@@ -59,6 +53,7 @@ export class TaskListHeaderComponent extends GanttCompBase implements OnInit {
       this.resizerColumn.width += currentClientX - this.resizerPreClientX;
       this.resizerPreClientX = evt.clientX;
       logger('resizer moving, event is %O, column is %O', evt, this.resizerColumn);
+      this.cdr.markForCheck();
     }
   }
 
@@ -69,6 +64,7 @@ export class TaskListHeaderComponent extends GanttCompBase implements OnInit {
       this.resizerColumn     = null;
       this.resizerPreClientX = null;
       logger('resizer ending, event is %O, column is %O', evt, this.resizerColumn);
+      this.cdr.markForCheck();
     }
   }
 

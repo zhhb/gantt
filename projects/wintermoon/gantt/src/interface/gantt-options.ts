@@ -104,6 +104,8 @@ export interface GanttOptionsTaskList {
     label: string;
     value: string;
     width: number;
+
+    [ key: string ]: any;
   }[];
   resizerWidth?: number;
   percent?: number;

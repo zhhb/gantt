@@ -1,11 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, forwardRef } from '@angular/core';
+import { Map } from 'immutable';
 import { GanttOptions } from '../../projects/wintermoon/gantt/src/interface/gantt-options';
 
 @Component({
   selector : 'app-root',
   template : `
     <button (click)="test()">Test {{count}}</button>
-    <gantt [(options)]="options" (ready)="onReady($event)" [count]="count"></gantt>
+    <gantt [(ngModel)]="options" (ready)="onReady($event)" [tasks]="tasks"></gantt>
   `,
   styleUrls: [ './app.component.less' ],
 })
@@ -35,9 +36,38 @@ export class AppComponent {
           label: '%',
           width: 40,
         },
+        {
+          id   : 4,
+          value: 'author',
+          label: 'Author',
+          html : true,
+          width: 100,
+        },
       ]
     }
   };
+
+  tasks = [
+    {
+      id      : 1,
+      label   : 'dsadasdsad1',
+      desc    : '23231',
+      progress: 20,
+    },
+    {
+      id      : 2,
+      label   : 'dsadasdsad2',
+      desc    : '23232',
+      progress: 30,
+    },
+    {
+      id      : 3,
+      label   : 'dsadasdsad3',
+      desc    : '23232',
+      progress: 10,
+      author: '<a href="http://www.baidu.com" target="_blank">Hello</a>'
+    }
+  ];
 
   constructor() {
   }
@@ -48,9 +78,9 @@ export class AppComponent {
 
   test() {
     this.count++;
-    // this.options.taskList.columns[ 0 ].label = `ID${this.count}`;
-    // this.options.taskList.columns[ 2 ].label = `${this.count}%`;
-    // this.options                             = Map(this.options).toObject();
+    this.options.taskList.columns[ 0 ].label = `ID${this.count}`;
+    this.options.taskList.columns[ 2 ].label = `${this.count}%`;
+    this.options                             = Map(this.options).toObject();
     console.log('change');
   }
 }

@@ -8,9 +8,9 @@ import { GanttCompBase } from '../../gantt.component';
       <div class="gantt-task-list">
         <gantt-task-list-header [ganttOptions]="ganttOptions"></gantt-task-list-header>
         <div class="gantt-task-list-items">
-          <ng-container *ngFor="let task of ganttTasks">
-            <gantt-task-list-item [task]="task"></gantt-task-list-item>
-          </ng-container>
+          <gantt-task-list-item *ngFor="let task of ganttTasks"
+                                [ganttOptions]="ganttOptions"
+                                [task]="task"></gantt-task-list-item>
         </div>
       </div>
     </div>

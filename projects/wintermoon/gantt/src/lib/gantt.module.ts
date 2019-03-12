@@ -1,4 +1,6 @@
 import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { GanttComponent } from './gantt.component';
 import { CalendarRowComponent } from './Calendar/calendar-row/calendar-row.component';
 import { CalendarComponent } from './Calendar/calendar/calendar.component';
@@ -18,7 +20,7 @@ import { TaskListItemColumnComponent } from './Task/task-list-item-column/task-l
 import { MainViewComponent } from './Layout/main-view/main-view.component';
 import { HeaderComponent } from './Layout/header/header.component';
 import { ExpanderComponent } from './Tools/expander/expander.component';
-import { CommonModule } from '@angular/common';
+
 
 @NgModule({
   declarations: [
@@ -44,6 +46,8 @@ import { CommonModule } from '@angular/common';
   ],
   imports     : [
     CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
   ],
   exports     : [ GanttComponent ]
 })

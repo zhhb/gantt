@@ -371,6 +371,11 @@
     call-me-maybe "^1.0.1"
     glob-to-regexp "^0.3.0"
 
+"@ngrx/store@^7.3.0":
+  version "7.3.0"
+  resolved "http://registry.npm.taobao.org/@ngrx/store/download/@ngrx/store-7.3.0.tgz#12684cef59765f161d0152b12a6caad63dbb832a"
+  integrity sha1-EmhM71l2XxYdAVKxKmyq1j27gyo=
+
 "@ngtools/json-schema@^1.1.0":
   version "1.1.0"
   resolved "http://registry.npm.taobao.org/@ngtools/json-schema/download/@ngtools/json-schema-1.1.0.tgz#c3a0c544d62392acc2813a42c8a0dc6f58f86922"
