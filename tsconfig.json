@@ -25,9 +25,11 @@
     ],
     "paths": {
       "@wintermoon/gantt": [
+        "dist/wintermoon/gantt",
         "dist/wintermoon/gantt"
       ],
       "@wintermoon/gantt/*": [
+        "dist/wintermoon/gantt/*",
         "dist/wintermoon/gantt/*"
       ]
     }
