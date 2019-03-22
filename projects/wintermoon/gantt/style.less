@@ -9,14 +9,12 @@
   text-align: left;
 
   table {
-    & {
-      width: 100%;
-      box-sizing: border-box;
-      table-layout: fixed;
-      border-collapse: collapse;
-      border-spacing: 0;
-      font-size: 1em;
-    }
+    width: 100%;
+    box-sizing: border-box;
+    table-layout: fixed;
+    border-collapse: collapse;
+    border-spacing: 0;
+    font-size: 1em;
 
     td, th {
       border-style: solid;
@@ -25,6 +23,7 @@
       vertical-align: top;
       border-color: #eee;
       white-space: nowrap;
+      text-align: center;
     }
   }
 }
@@ -39,12 +38,23 @@
   width: 3px;
   border-style: double;
   background: #eee;
+  cursor: col-resize;
 }
 
 .@{prefix}-resource-area {
+  table {
+    th, td {
+      text-align: left;
+    }
+  }
 }
 
 .@{prefix}-time-area {
+  table {
+    th, td {
+      text-align: center;
+    }
+  }
 }
 
 .@{prefix}-scoller-clip {
@@ -68,8 +78,26 @@
     }
   }
 
+  table {
+    border-style: hidden;
+
+    th {
+      vertical-align: middle;
+    }
+  }
+
   &.gantt-no-scrollbars::-webkit-scrollbar {
     width: 0;
     height: 0;
+  }
+}
+
+.@{prefix}-cell-content {
+  position: relative;
+  padding-left: 5px;
+  padding-right: 5px;
+
+  .@{prefix}-cell-text {
+
   }
 }
