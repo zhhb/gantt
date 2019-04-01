@@ -33,6 +33,8 @@ export class ScrollerDirective implements OnChanges {
   @HostListener('DomMouseScroll', [ '$event' ])
   @HostListener('MozMousePixelScroll', [ '$event' ])
   onWheel(evt: MouseWheelEvent | WheelEvent | TouchEvent) {
+    evt.preventDefault();
+    evt.stopPropagation();
     const distances = {
       dx: 0,
       dy: 0
