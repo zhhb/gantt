@@ -27,7 +27,11 @@
 <!-- ng template below -->
 <ng-template let-type #scorllerTpl>
   <div class="gantt-scoller-clip" [ngSwitch]="type">
-    <div class="gantt-scoller gantt-no-scrollbars" ganttScroller>
+    <div class="gantt-scoller gantt-no-scrollbars"
+         ganttScroller
+         (ganttScrolling)="onScroll(type,$event)"
+         [scrollHorizontal]="getScrollLeft(type)"
+         [scrollVertical]="getScrollTop(type)">
       <div class="gantt-scoller-area"
            [ngStyle]="{'width.px':(type.startsWith('resource')?resourcesTotalWidth:timelineTotalWidth)}">
         <div class="gantt-content">
@@ -63,7 +67,7 @@
 <ng-template #timeHeadTpl>
   <table style="height: 50px;" [ngStyle]="{'width.px':timelineTotalWidth}">
     <colgroup>
-      <col *ngFor="let t of getTimelineItems(timeline.duration)"
+      <col *ngFor="let t of getTimelineItems(timeline.duration);let i = index"
            [ngStyle]="{'width.px':timeLineCellWith}">
     </colgroup>
     <tbody>
@@ -77,7 +81,8 @@
       </ng-container>
     </tr>
     <tr>
-      <th *ngFor="let t of getTimelineItems(timeline.duration);let i = index;">
+      <th *ngFor="let t of getTimelineItems(timeline.duration);let i = index;"
+          [ngClass]="{'gantt-current-date':currentDateOffsetTimeLineStart===i}">
         <div class="gantt-cell-content">
           <span class="gantt-cell-text">{{calcTimeLineDate(i)|date:'dd'}}</span>
         </div>
@@ -94,11 +99,12 @@
     </colgroup>
     <tbody>
     <tr *ngFor="let task of tasks">
-      <th *ngFor="let column of columns">
+      <td *ngFor="let column of columns"
+          [ngStyle]="{'height.px':cellHeight}">
         <div class="gantt-cell-content">
           <span class="gantt-cell-text">{{task[ column.key ] || ''}}</span>
         </div>
-      </th>
+      </td>
     </tr>
     </tbody>
   </table>
@@ -106,5 +112,20 @@
 <!-- gantt body part template for right -->
 <ng-template #timeBodyTpl>
   <table style="height: 25px;">
+    <colgroup>
+      <col *ngFor="let t of getTimelineItems(timeline.duration);"
+           [ngStyle]="{'width.px':timeLineCellWith}">
+    </colgroup>
+    <tbody>
+    <tr *ngFor="let task of tasks">
+      <td *ngFor="let t of getTimelineItems(timeline.duration);let i = index;"
+          [ngStyle]="{'height.px':cellHeight}"
+          [ngClass]="{'gantt-current-date':currentDateOffsetTimeLineStart===i}">
+        <div class="gantt-cell-content">
+          <span class="gantt-cell-text">{{calcTimeLineDate(i)|date:'dd'}}</span>
+        </div>
+      </td>
+    </tr>
+    </tbody>
   </table>
 </ng-template>

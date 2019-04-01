@@ -1,4 +1,8 @@
 @prefix: gantt;
+@current-date-bgcolor: rgba(156, 255, 148, 0.8);
+@cell-body-font-size: 12px;
+@cell-head-font-size: 14px;
+@cell-bgcolor: #fff;
 
 .@{prefix}-wrapper {
   position: relative;
@@ -20,7 +24,7 @@
       border-style: solid;
       border-width: 1px;
       padding: 0;
-      vertical-align: top;
+      vertical-align: middle;
       border-color: #eee;
       white-space: nowrap;
       text-align: center;
@@ -54,6 +58,12 @@
     th, td {
       text-align: center;
     }
+
+    .gantt-current-date {
+      &, & > * {
+        background-color: @current-date-bgcolor !important;
+      }
+    }
   }
 }
 
@@ -65,7 +75,8 @@
 .@{prefix}-scoller {
 
   & {
-    overflow: scroll hidden;
+    //overflow: scroll hidden;
+    overflow: hidden;
     margin: 0px;
   }
 
@@ -96,8 +107,15 @@
   position: relative;
   padding-left: 5px;
   padding-right: 5px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  background-color: @cell-bgcolor;
 
   .@{prefix}-cell-text {
+    font-size: @cell-body-font-size;
+  }
 
+  th & {
+    font-size: @cell-head-font-size;
   }
 }

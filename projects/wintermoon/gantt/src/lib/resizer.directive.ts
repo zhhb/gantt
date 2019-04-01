@@ -10,21 +10,23 @@ export class ResizerDirective {
   private readonly el: HTMLElement;
   private captured = false;
 
-  @Output() resizing: EventEmitter<PointerEvent> = new EventEmitter();
+  @Output() resizing: EventEmitter<MouseEvent | PointerEvent> = new EventEmitter();
 
   constructor(private elRef: ElementRef) {
     this.el = elRef.nativeElement;
   }
 
   @HostListener('pointerdown', [ '$event' ])
-  onMouseDown(evt: PointerEvent) {
-    this.el.setPointerCapture(evt.pointerId);
+  @HostListener('mousedown', [ '$event' ])
+  onMouseDown(evt: MouseEvent | PointerEvent) {
+    this.el.setPointerCapture(1);
     this.captured = true;
     debug('pointerdown capture event keep on this dom: %O', this.el);
   }
 
   @HostListener('pointermove', [ '$event' ])
-  onMouseMove(evt: PointerEvent) {
+  @HostListener('mousemove', [ '$event' ])
+  onMouseMove(evt: MouseEvent | PointerEvent) {
     if ( !this.captured ) {
       return;
     }
@@ -32,9 +34,9 @@ export class ResizerDirective {
     debug('pointermove: %O, %O, x: %d,y: %d', this.el, evt, evt.clientX, evt.clientY);
   }
 
-  @HostListener('pointerup', [ '$event' ])
-  onMouseUp(evt: PointerEvent) {
-    this.el.releasePointerCapture(evt.pointerId);
+  @HostListener('mouseup', [ '$event' ])
+  onMouseUp(evt: MouseEvent | PointerEvent) {
+    this.el.releasePointerCapture(1);
     this.captured = false;
     debug('pointerup release event on this dom: %O', this.el);
   }

@@ -8,7 +8,8 @@ export interface GanttColumn {
 }
 
 export interface GanttTimeline {
-  duration: string | number;
-  starttime: string | number | Date;
-  endtime?: string | number | Date;
+  duration: number;
+  startDate: number | Date;
+  endDate?: number | Date;
+  rowHeight?: number;
 }

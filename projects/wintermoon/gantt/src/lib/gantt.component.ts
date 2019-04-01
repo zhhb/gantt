@@ -1,4 +1,16 @@
-import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { debug as Debug } from 'debug';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewChild
+} from '@angular/core';
 import {
   addDays,
   addMonths,
@@ -9,7 +21,9 @@ import {
   getMonth,
   startOfMonth
 } from 'date-fns';
-import { GanttColumn } from './gantt.interface';
+import { GanttColumn, GanttTimeline } from './gantt.interface';
+
+const debug = Debug('Gantt:');
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -19,19 +33,25 @@ import { GanttColumn } from './gantt.interface';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GanttComponent implements OnInit, AfterViewInit {
-
-  private timeLineCellWith = 50;
+  private timeLineCellWith      = 50;
   private timeLineAreaHeadEL: HTMLElement;
+  private timeLineAreaBodyEL: HTMLElement;
   private timeLineAreaHeadScrollEL: HTMLElement;
+  private timeLineAreaBodyScrollEL: HTMLElement;
   private timelineTotalWidth: number;
   private timeLineStartDate: Date;
+  private currentDate           = new Date();
+  private timelineScrollLeft    = 0;
+  private timelineMaxScrollLeft = 0;
+  private bodyScrollTop         = 0;
 
   @ViewChild('timeLineAreaHead') private timeLineAreaHead: ElementRef;
   @ViewChild('timeLineAreaBody') private timeLineAreaBody: ElementRef;
 
   @Input() columns: GanttColumn[];
-  @Input() timeline: any;
+  @Input() timeline: GanttTimeline;
   @Input() tasks: any[] = [];
+
 
   get resourcesTotalWidth() {
     return this.columns
@@ -51,19 +71,43 @@ export class GanttComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     try {
-      this.timeLineStartDate = this.timeline.startDate;
+      this.timeLineStartDate = new Date(this.timeline.startDate);
     } catch ( e ) {
       this.timeLineStartDate = new Date();
     }
   }
 
   ngAfterViewInit(): void {
-    this.timeLineAreaHeadEL                  = this.timeLineAreaHead.nativeElement;
-    this.timeLineAreaHeadScrollEL            = this.timeLineAreaHeadEL.querySelector('.gantt-scoller');
-    this.timeLineCellWith                    = Math.max(50, this.timeLineAreaHeadEL.clientWidth / this.timeline.duration);
-    this.timelineTotalWidth                  = this.timeline.duration * this.timeLineCellWith;
-    this.timeLineAreaHeadScrollEL.scrollLeft = this.calcCurrentDateDiff() * this.timeLineCellWith;
-    setTimeout(() => this.cdr.markForCheck());
+    this.timeLineAreaHeadEL       = this.timeLineAreaHead.nativeElement;
+    this.timeLineAreaHeadScrollEL = this.timeLineAreaHeadEL.querySelector('.gantt-scoller');
+    // this.timeLineAreaBodyEL       = this.timeLineAreaBody.nativeElement;
+    // this.timeLineAreaBodyScrollEL = this.timeLineAreaBodyEL.querySelector('.gantt-scoller');
+    this.timeLineCellWith      = Math.max(50, this.timeLineAreaHeadEL.clientWidth / this.timeline.duration);
+    this.timelineTotalWidth    = this.timeline.duration * this.timeLineCellWith;
+    this.timelineScrollLeft    = this.calcCurrentDateDiff() * this.timeLineCellWith;
+    this.timelineMaxScrollLeft = Math.max(0, this.timelineTotalWidth - this.timeLineAreaHeadEL.clientWidth);
+    // this.timeLineAreaHeadScrollEL.scrollLeft = this.timelineScrollLeft;
+    // this.timeLineAreaBodyScrollEL.scrollLeft = this.timelineScrollLeft;
+    setTimeout(() => {
+      debug('trigger check after view init and scroll config');
+      this.cdr.markForCheck();
+    });
+  }
+
+  onScroll(type, evt: { dx: number, dy: number }) {
+    debug('%O scrolling: %O', type, evt);
+    if ( type === 'time:head' ) {
+      // this.timelineScrollLeft = this.timeLineAreaHeadScrollEL.scrollLeft;
+      const timelineScrollLeftTmp = this.timelineScrollLeft + evt.dx;
+      this.timelineScrollLeft     = Math.max(0, timelineScrollLeftTmp);
+    } else if ( type === 'time:body' ) {
+      // this.timelineScrollLeft = this.timeLineAreaBodyScrollEL.scrollLeft;
+      const timelineScrollLeftTmp = this.timelineScrollLeft + evt.dx;
+      this.timelineScrollLeft     = Math.max(0, Math.min(this.timelineMaxScrollLeft, timelineScrollLeftTmp));
+      this.bodyScrollTop += evt.dy;
+    }
+    // this.timeLineAreaHeadScrollEL.scrollLeft = this.timelineScrollLeft;
+    // this.timeLineAreaBodyScrollEL.scrollLeft = this.timelineScrollLeft;
   }
 
   private calcTimeLineDate(offsetDays: number): Date {
@@ -96,11 +140,39 @@ export class GanttComponent implements OnInit, AfterViewInit {
     return differenceInCalendarDays(Date.now(), this.timeLineStartDate);
   }
 
-  private getTimelineItems(length: number = 5) {
+  private getTimelineItems(length: number = 10) {
     return Array.from({ length }).map((_, i) => i);
   }
 
   private getColumnWidth(column: GanttColumn) {
     return column.style && column.style.width ? column.style.width : 50;
+  }
+
+  private get currentDateOffsetTimeLineStart() {
+    return differenceInCalendarDays(this.currentDate, this.timeLineStartDate);
+  }
+
+  private getScrollLeft(type: string) {
+    switch ( type ) {
+      case 'time:head':
+      case 'time:body':
+        return this.timelineScrollLeft;
+      default:
+        return null;
+    }
+  }
+
+  private getScrollTop(type: string) {
+    switch ( type ) {
+      case 'resource:body':
+      case 'time:body':
+        return this.bodyScrollTop;
+      default:
+        return null;
+    }
+  }
+
+  private get cellHeight() {
+    return this.timeline.rowHeight || 36;
   }
 }

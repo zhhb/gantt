@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { GanttColumn } from '../../projects/wintermoon/gantt/src/lib/gantt.interface';
+import { ChangeDetectorRef, Component } from '@angular/core';
+import { GanttColumn, GanttTimeline } from '../../projects/wintermoon/gantt/src/lib/gantt.interface';
 
 @Component({
   selector : 'app-root',
@@ -12,13 +12,13 @@ import { GanttColumn } from '../../projects/wintermoon/gantt/src/lib/gantt.inter
 })
 export class AppComponent {
 
-  columns: GanttColumn[] = [
+  columns: GanttColumn[]  = [
     {
       id   : 0,
       key  : 'name',
       label: '任务名称',
       style: {
-        width: 200
+        width: 160
       }
     },
     {
@@ -42,7 +42,7 @@ export class AppComponent {
       key  : 'starttime',
       label: '开始时间',
       style: {
-        width: 100
+        width: 120
       }
     },
     {
@@ -50,15 +50,16 @@ export class AppComponent {
       key  : 'endtime',
       label: '结束时间',
       style: {
-        width: 100
+        width: 120
       }
     },
   ];
-  timeline               = {
+  timeline: GanttTimeline = {
     startDate: new Date('2019-03-01'),
     duration : 120,
+    rowHeight: 24,
   };
-  tasks: any[]           = [
+  tasks: any[]            = [
     {
       name     : '任务1',
       executor : '成员A',
