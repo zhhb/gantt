@@ -1,4 +1,5 @@
 import { debug as Debug } from 'debug';
+import { Manager as HammerManager, Swipe, DIRECTION_HORIZONTAL } from 'hammerjs';
 import {
   AfterViewInit,
   Directive,
@@ -6,7 +7,7 @@ import {
   EventEmitter,
   HostListener,
   Input,
-  OnChanges,
+  OnChanges, OnDestroy,
   OnInit,
   Output,
   SimpleChanges
@@ -17,9 +18,10 @@ const debug = Debug('Gantt:Scroller');
 @Directive({
   selector: '[ganttScroller]',
 })
-export class ScrollerDirective implements AfterViewInit, OnChanges {
+export class ScrollerDirective implements AfterViewInit, OnChanges, OnDestroy {
 
-  private el: HTMLElement;
+  private readonly el: HTMLElement;
+  private readonly manager: HammerManager;
   private previousTouch: Touch;
 
   @Input() scrollVertical: number;
@@ -28,7 +30,18 @@ export class ScrollerDirective implements AfterViewInit, OnChanges {
   @Output() ganttScrolling: EventEmitter<{ dx?: number, dy?: number }> = new EventEmitter();
 
   constructor(private elRef: ElementRef) {
-    this.el = elRef.nativeElement;
+    this.el      = elRef.nativeElement;
+    this.manager = new HammerManager(this.el, {
+      recognizers: [
+        [ Swipe, {
+          enable   : true,
+          direction: DIRECTION_HORIZONTAL
+        } ]
+      ]
+    });
+    this.manager.on('swipe', (evt) => {
+      debug('swipe: ', evt);
+    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -42,12 +55,18 @@ export class ScrollerDirective implements AfterViewInit, OnChanges {
 
   }
 
+  ngOnDestroy(): void {
+    if ( this.manager ) {
+      this.manager.destroy();
+    }
+  }
+
   @HostListener('wheel', [ '$event' ])
   @HostListener('mousewheel', [ '$event' ])
-  @HostListener('touchmove', [ '$event' ])
+  // @HostListener('touchmove', [ '$event' ])
   @HostListener('DomMouseScroll', [ '$event' ])
   @HostListener('MozMousePixelScroll', [ '$event' ])
-  onWheel(evt: MouseWheelEvent | WheelEvent | TouchEvent) {
+  onWheel(evt: MouseWheelEvent | WheelEvent) {
     evt.preventDefault();
     evt.stopPropagation();
     const distances = {
@@ -55,35 +74,35 @@ export class ScrollerDirective implements AfterViewInit, OnChanges {
       dy: 0
     };
     try {
-      if ( !!TouchEvent && evt instanceof TouchEvent ) {
-        const touchs       = evt.touches || evt.changedTouches;
-        distances.dx       = this.previousTouch.screenX - touchs[ 0 ].screenX;
-        distances.dy       = this.previousTouch.screenY - touchs[ 0 ].screenY;
-        this.previousTouch = touchs[ 0 ];
-      } else {
-        distances.dx = (evt as (MouseWheelEvent | WheelEvent)).deltaX;
-        distances.dy = (evt as (MouseWheelEvent | WheelEvent)).deltaY;
-      }
+      // if ( !!TouchEvent && evt instanceof TouchEvent ) {
+      //   const touchs       = evt.touches || evt.changedTouches;
+      //   distances.dx       = this.previousTouch.screenX - touchs[ 0 ].screenX;
+      //   distances.dy       = this.previousTouch.screenY - touchs[ 0 ].screenY;
+      //   this.previousTouch = touchs[ 0 ];
+      // } else {
+      distances.dx = (evt as (MouseWheelEvent | WheelEvent)).deltaX;
+      distances.dy = (evt as (MouseWheelEvent | WheelEvent)).deltaY;
+      // }
       this.ganttScrolling.emit(distances);
     } catch ( e ) {
       // TODO
     }
   }
 
-  @HostListener('touchstart', [ '$event' ])
-  onTouchStart(evt: TouchEvent) {
-    const touchs       = evt.touches || evt.changedTouches;
-    this.previousTouch = touchs[ 0 ];
-  }
+  // @HostListener('touchstart', [ '$event' ])
+  // onTouchStart(evt: TouchEvent) {
+  //   const touchs       = evt.touches || evt.changedTouches;
+  //   this.previousTouch = touchs[ 0 ];
+  // }
+  //
+  // @HostListener('touchend')
+  // onTouchEnd() {
+  //   this.previousTouch = null;
+  // }
 
-  @HostListener('touchend')
-  onTouchEnd() {
-    this.previousTouch = null;
-  }
-
-  @HostListener('scroll', [ '$event' ])
-  onScroll(evt: Event) {
-    // evt.stopPropagation();
-    // evt.preventDefault();
-  }
+  // @HostListener('scroll', [ '$event' ])
+  // onScroll(evt: Event) {
+  //   // evt.stopPropagation();
+  //   // evt.preventDefault();
+  // }
 }
