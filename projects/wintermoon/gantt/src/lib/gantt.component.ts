@@ -33,18 +33,18 @@ const debug = Debug('Gantt:');
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GanttComponent implements OnInit, AfterViewInit {
-  private timeLineCellWith      = 50;
-  private timeLineHeadHeight    = 50;
-  private timeLineAreaHeadEL: HTMLElement;
-  private timeLineAreaBodyEL: HTMLElement;
-  private timeLineAreaHeadScrollEL: HTMLElement;
-  private timeLineAreaBodyScrollEL: HTMLElement;
-  private timelineTotalWidth: number;
-  private timeLineStartDate: Date;
-  private currentDate           = new Date();
-  private timelineScrollLeft    = 0;
-  private timelineMaxScrollLeft = 0;
-  private bodyScrollTop         = 0;
+  timeLineCellWith      = 50;
+  timeLineHeadHeight    = 50;
+  timeLineAreaHeadEL: HTMLElement;
+  timeLineAreaBodyEL: HTMLElement;
+  timeLineAreaHeadScrollEL: HTMLElement;
+  timeLineAreaBodyScrollEL: HTMLElement;
+  timelineTotalWidth: number;
+  timeLineStartDate: Date;
+  currentDate           = new Date();
+  timelineScrollLeft    = 0;
+  timelineMaxScrollLeft = 0;
+  bodyScrollTop         = 0;
 
   @ViewChild('timeLineAreaHead') private timeLineAreaHead: ElementRef;
   @ViewChild('timeLineAreaBody') private timeLineAreaBody: ElementRef;
@@ -112,7 +112,7 @@ export class GanttComponent implements OnInit, AfterViewInit {
     // this.timeLineAreaBodyScrollEL.scrollLeft = this.timelineScrollLeft;
   }
 
-  private calcTimeLineDate(offsetDays: number): Date {
+  calcTimeLineDate(offsetDays: number): Date {
     offsetDays = Math.ceil(offsetDays);
     if ( offsetDays <= 0 ) {
       return this.timeLineStartDate;
@@ -120,7 +120,7 @@ export class GanttComponent implements OnInit, AfterViewInit {
     return addDays(this.timeLineStartDate, offsetDays);
   }
 
-  private calcTimeLineMonth(): [ Date, number ][  ] {
+  calcTimeLineMonth(): [ Date, number ][  ] {
     const edgeDate      = addDays(this.timeLineStartDate, this.timeline.duration);
     const months        = [];
     let monthMonthCount = differenceInCalendarMonths(edgeDate, this.timeLineStartDate);
@@ -138,23 +138,23 @@ export class GanttComponent implements OnInit, AfterViewInit {
     return months;
   }
 
-  private calcCurrentDateDiff() {
+  calcCurrentDateDiff() {
     return differenceInCalendarDays(Date.now(), this.timeLineStartDate);
   }
 
-  private getTimelineItems(length: number = 10) {
+  getTimelineItems(length: number = 10) {
     return Array.from({ length }).map((_, i) => i);
   }
 
-  private getColumnWidth(column: GanttColumn) {
+  getColumnWidth(column: GanttColumn) {
     return column.style && column.style.width ? column.style.width : 50;
   }
 
-  private get currentDateOffsetTimeLineStart() {
+  get currentDateOffsetTimeLineStart() {
     return differenceInCalendarDays(this.currentDate, this.timeLineStartDate);
   }
 
-  private getScrollLeft(type: string) {
+  getScrollLeft(type: string) {
     switch ( type ) {
       case 'time:head':
       case 'time:body':
@@ -164,7 +164,7 @@ export class GanttComponent implements OnInit, AfterViewInit {
     }
   }
 
-  private getScrollTop(type: string) {
+  getScrollTop(type: string) {
     switch ( type ) {
       case 'resource:body':
       case 'time:body':
@@ -174,7 +174,7 @@ export class GanttComponent implements OnInit, AfterViewInit {
     }
   }
 
-  private get cellHeight() {
+  get cellHeight() {
     return this.timeline.rowHeight || 36;
   }
 }

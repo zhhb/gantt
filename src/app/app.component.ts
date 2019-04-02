@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
-import { GanttColumn, GanttTimeline } from '../../projects/wintermoon/gantt/src/lib/gantt.interface';
+import { GanttColumn, GanttTimeline } from '@wintermoon/gantt';
 
 @Component({
   selector : 'app-root',

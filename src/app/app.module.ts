@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
-import { GanttModule } from '../../projects/wintermoon/gantt/src/lib/gantt.module';
+import { GanttModule } from '@wintermoon/gantt';
 
 @NgModule({
   declarations: [

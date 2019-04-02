@@ -54,16 +54,20 @@ export class ScrollerDirective implements AfterViewInit, OnChanges {
       dx: 0,
       dy: 0
     };
-    if ( evt instanceof TouchEvent ) {
-      const touchs       = evt.touches || evt.changedTouches;
-      distances.dx       = this.previousTouch.screenX - touchs[ 0 ].screenX;
-      distances.dy       = this.previousTouch.screenY - touchs[ 0 ].screenY;
-      this.previousTouch = touchs[ 0 ];
-    } else {
-      distances.dx = (evt as (MouseWheelEvent | WheelEvent)).deltaX;
-      distances.dy = (evt as (MouseWheelEvent | WheelEvent)).deltaY;
+    try {
+      if ( !!TouchEvent && evt instanceof TouchEvent ) {
+        const touchs       = evt.touches || evt.changedTouches;
+        distances.dx       = this.previousTouch.screenX - touchs[ 0 ].screenX;
+        distances.dy       = this.previousTouch.screenY - touchs[ 0 ].screenY;
+        this.previousTouch = touchs[ 0 ];
+      } else {
+        distances.dx = (evt as (MouseWheelEvent | WheelEvent)).deltaX;
+        distances.dy = (evt as (MouseWheelEvent | WheelEvent)).deltaY;
+      }
+      this.ganttScrolling.emit(distances);
+    } catch ( e ) {
+      // TODO
     }
-    this.ganttScrolling.emit(distances);
   }
 
   @HostListener('touchstart', [ '$event' ])
