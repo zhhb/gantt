@@ -1,8 +1,9 @@
 @prefix: gantt;
-@current-date-bgcolor: rgba(156, 255, 148, 0.8);
+@current-date-bgcolor: #eee;
 @cell-body-font-size: 12px;
 @cell-head-font-size: 14px;
 @cell-bgcolor: #fff;
+@divider-color: #eee;
 
 .@{prefix}-wrapper {
   position: relative;
@@ -25,7 +26,7 @@
       border-width: 1px;
       padding: 0;
       vertical-align: middle;
-      border-color: #eee;
+      border-color: @divider-color;
       white-space: nowrap;
       text-align: center;
     }
@@ -41,7 +42,7 @@
 .@{prefix}-divider {
   width: 3px;
   border-style: double;
-  background: #eee;
+  background: @divider-color;
   cursor: col-resize;
 }
 
@@ -57,13 +58,30 @@
   table {
     th, td {
       text-align: center;
+      position: relative;
     }
 
-    .gantt-current-date {
-      &, & > * {
-        background-color: @current-date-bgcolor !important;
+    th.gantt-current-date {
+      & {
+        background-color: @current-date-bgcolor;
+      }
+
+      & > * {
+        background-color: transparent !important;
       }
     }
+
+    //td.gantt-current-date:before {
+    //  content: '';
+    //  display: inline-block;
+    //  height: 120%;
+    //  width: 5px;
+    //  background-color: @current-date-bgcolor;
+    //  position: absolute;
+    //  top: -1px;
+    //  left: 0;
+    //  z-index: 20;
+    //}
   }
 }
 
@@ -76,7 +94,6 @@
 
   & {
     overflow: scroll hidden;
-    overflow: hidden;
     margin: 0px;
   }
 

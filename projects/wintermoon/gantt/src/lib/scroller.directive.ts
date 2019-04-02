@@ -57,8 +57,8 @@ export class ScrollerDirective implements OnChanges {
     this.previousTouch = touchs[ 0 ];
   }
 
-  @HostListener('touchend', [ '$event' ])
-  onTouchEnd(evt: TouchEvent) {
+  @HostListener('touchend')
+  onTouchEnd() {
     this.previousTouch = null;
   }
 }
