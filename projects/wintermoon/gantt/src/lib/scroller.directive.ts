@@ -1,12 +1,23 @@
 import { debug as Debug } from 'debug';
-import { Directive, ElementRef, EventEmitter, HostListener, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import {
+  AfterViewInit,
+  Directive,
+  ElementRef,
+  EventEmitter,
+  HostListener,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges
+} from '@angular/core';
 
 const debug = Debug('Gantt:Scroller');
 
 @Directive({
   selector: '[ganttScroller]',
 })
-export class ScrollerDirective implements OnChanges {
+export class ScrollerDirective implements AfterViewInit, OnChanges {
 
   private el: HTMLElement;
   private previousTouch: Touch;
@@ -25,6 +36,10 @@ export class ScrollerDirective implements OnChanges {
     if ( changes.scrollHorizontal && !changes.scrollHorizontal.firstChange ) {
       this.el.scrollLeft = this.scrollHorizontal;
     }
+  }
+
+  ngAfterViewInit(): void {
+
   }
 
   @HostListener('wheel', [ '$event' ])
@@ -60,5 +75,11 @@ export class ScrollerDirective implements OnChanges {
   @HostListener('touchend')
   onTouchEnd() {
     this.previousTouch = null;
+  }
+
+  @HostListener('scroll', [ '$event' ])
+  onScroll(evt: Event) {
+    // evt.stopPropagation();
+    // evt.preventDefault();
   }
 }

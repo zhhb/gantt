@@ -47,7 +47,7 @@
 </ng-template>
 <!-- gantt head part template for left -->
 <ng-template #resourceHeadTpl>
-  <table style="height: 50px;">
+  <table [ngStyle]="{'height.px':timeLineHeadHeight}">
     <colgroup>
       <col *ngFor="let column of columns" [ngStyle]="{'width.px':getColumnWidth(column)}">
     </colgroup>
@@ -65,13 +65,13 @@
 </ng-template>
 <!-- gantt head part template for right -->
 <ng-template #timeHeadTpl>
-  <table style="height: 50px;" [ngStyle]="{'width.px':timelineTotalWidth}">
+  <table [ngStyle]="{'width.px':timelineTotalWidth,'height.px':timeLineHeadHeight}">
     <colgroup>
       <col *ngFor="let t of getTimelineItems(timeline.duration);let i = index"
            [ngStyle]="{'width.px':timeLineCellWith}">
     </colgroup>
     <tbody>
-    <tr>
+    <!--<tr>
       <ng-container *ngFor="let m of calcTimeLineMonth()">
         <th [attr.colspan]="m[1]">
           <div class="gantt-cell-content">
@@ -79,12 +79,12 @@
           </div>
         </th>
       </ng-container>
-    </tr>
+    </tr>-->
     <tr>
       <th *ngFor="let t of getTimelineItems(timeline.duration);let i = index;"
           [ngClass]="{'gantt-current-date':currentDateOffsetTimeLineStart===i}">
         <div class="gantt-cell-content">
-          <span class="gantt-cell-text">{{calcTimeLineDate(i)|date:'dd'}}</span>
+          <span class="gantt-cell-text">{{calcTimeLineDate(i)|date:'MM.dd'}}</span>
         </div>
       </th>
     </tr>
@@ -93,7 +93,7 @@
 </ng-template>
 <!-- gantt body part template for left -->
 <ng-template #resourceBodyTpl>
-  <table style="height: 25px;">
+  <table>
     <colgroup>
       <col *ngFor="let column of columns" [ngStyle]="{'width.px':getColumnWidth(column)}">
     </colgroup>
@@ -111,20 +111,24 @@
 </ng-template>
 <!-- gantt body part template for right -->
 <ng-template #timeBodyTpl>
-  <table style="height: 25px;">
+  <table>
     <colgroup>
       <col *ngFor="let t of getTimelineItems(timeline.duration);"
            [ngStyle]="{'width.px':timeLineCellWith}">
     </colgroup>
     <tbody>
     <tr *ngFor="let task of tasks">
-      <td *ngFor="let t of getTimelineItems(timeline.duration);let i = index;"
+      <td [attr.colspan]="timeline.duration"
+          [ngStyle]="{'height.px':cellHeight}">
+        <div class="gantt-cell-content"></div>
+      </td>
+      <!--<td *ngFor="let t of getTimelineItems(timeline.duration);let i = index;"
           [ngStyle]="{'height.px':cellHeight}"
           [ngClass]="{'gantt-current-date':currentDateOffsetTimeLineStart===i}">
         <div class="gantt-cell-content">
-          <span class="gantt-cell-text">{{calcTimeLineDate(i)|date:'dd'}}</span>
+          &lt;!&ndash;<span class="gantt-cell-text">{{calcTimeLineDate(i)|date:'dd'}}</span>&ndash;&gt;
         </div>
-      </td>
+      </td>-->
     </tr>
     </tbody>
   </table>

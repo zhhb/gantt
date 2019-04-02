@@ -12,4 +12,5 @@ export interface GanttTimeline {
   startDate: number | Date;
   endDate?: number | Date;
   rowHeight?: number;
+  headHeight?: number;
 }

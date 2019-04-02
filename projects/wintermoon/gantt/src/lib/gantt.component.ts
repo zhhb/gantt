@@ -34,6 +34,7 @@ const debug = Debug('Gantt:');
 })
 export class GanttComponent implements OnInit, AfterViewInit {
   private timeLineCellWith      = 50;
+  private timeLineHeadHeight    = 50;
   private timeLineAreaHeadEL: HTMLElement;
   private timeLineAreaBodyEL: HTMLElement;
   private timeLineAreaHeadScrollEL: HTMLElement;
@@ -83,6 +84,7 @@ export class GanttComponent implements OnInit, AfterViewInit {
     // this.timeLineAreaBodyEL       = this.timeLineAreaBody.nativeElement;
     // this.timeLineAreaBodyScrollEL = this.timeLineAreaBodyEL.querySelector('.gantt-scoller');
     this.timeLineCellWith      = Math.max(50, this.timeLineAreaHeadEL.clientWidth / this.timeline.duration);
+    this.timeLineHeadHeight    = this.timeline.headHeight || 50;
     this.timelineTotalWidth    = this.timeline.duration * this.timeLineCellWith;
     this.timelineScrollLeft    = this.calcCurrentDateDiff() * this.timeLineCellWith;
     this.timelineMaxScrollLeft = Math.max(0, this.timelineTotalWidth - this.timeLineAreaHeadEL.clientWidth);
@@ -96,16 +98,16 @@ export class GanttComponent implements OnInit, AfterViewInit {
 
   onScroll(type, evt: { dx: number, dy: number }) {
     debug('%O scrolling: %O', type, evt);
+    let timelineScrollLeftTmp: number;
     if ( type === 'time:head' ) {
       // this.timelineScrollLeft = this.timeLineAreaHeadScrollEL.scrollLeft;
-      const timelineScrollLeftTmp = this.timelineScrollLeft + evt.dx;
-      this.timelineScrollLeft     = Math.max(0, timelineScrollLeftTmp);
+      timelineScrollLeftTmp = this.timelineScrollLeft + evt.dx;
     } else if ( type === 'time:body' ) {
       // this.timelineScrollLeft = this.timeLineAreaBodyScrollEL.scrollLeft;
-      const timelineScrollLeftTmp = this.timelineScrollLeft + evt.dx;
-      this.timelineScrollLeft     = Math.max(0, Math.min(this.timelineMaxScrollLeft, timelineScrollLeftTmp));
+      timelineScrollLeftTmp = this.timelineScrollLeft + evt.dx;
       this.bodyScrollTop += evt.dy;
     }
+    this.timelineScrollLeft = Math.max(0, Math.min(this.timelineMaxScrollLeft, timelineScrollLeftTmp));
     // this.timeLineAreaHeadScrollEL.scrollLeft = this.timelineScrollLeft;
     // this.timeLineAreaBodyScrollEL.scrollLeft = this.timelineScrollLeft;
   }

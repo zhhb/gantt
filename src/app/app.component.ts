@@ -55,9 +55,10 @@ export class AppComponent {
     },
   ];
   timeline: GanttTimeline = {
-    startDate: new Date('2019-03-01'),
-    duration : 120,
-    rowHeight: 24,
+    startDate : new Date('2019-03-01'),
+    duration  : 120,
+    rowHeight : 24,
+    headHeight: 32,
   };
   tasks: any[]            = [
     {
